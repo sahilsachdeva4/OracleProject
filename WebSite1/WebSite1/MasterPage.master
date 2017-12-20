@@ -1,0 +1,54 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+<head runat="server">
+    <title>My Website</title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="Header">
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:Oracle1ConnectionString %>" ProviderName="<%$ ConnectionStrings:Oracle1ConnectionString.ProviderName %>" SelectCommand="SELECT * FROM &quot;DD_DONOR&quot;"></asp:SqlDataSource>
+        <asp:Image ID="Image1" runat="server" Height="174" Width="450" AlternateText="Library Header Image" ImageUrl="~/Images/header.gif" BorderColor="Black" />
+    </div>
+    <div class="Menu">
+        <asp:SiteMapDataSource ID="SiteMapDataSource" runat="server" ShowStartingNode="False" />
+        <asp:MultiView ID="MultiView1" runat="server">
+            <asp:View ID="View1" runat="server">
+                <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
+                <br />
+                <asp:Button ID="btnRegister" runat="server" OnClick="btnRegister_Click" Text="Register" />
+            </asp:View>
+            <asp:View ID="View2" runat="server">
+                Username<asp:TextBox ID="txtUsername" runat="server" ValidationGroup="login"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtUsername" ErrorMessage="RequiredFieldValidator" ValidationGroup="login"></asp:RequiredFieldValidator>
+                <br />
+                Password<asp:TextBox ID="txtPassword" runat="server" TextMode="Password" ValidationGroup="login"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPassword" ErrorMessage="RequiredFieldValidator" ValidationGroup="login"></asp:RequiredFieldValidator>
+                <br />
+                <asp:Button ID="btnLogin2" runat="server" OnClick="btnLogin2_Click" Text="Login" ValidateRequestMode="Enabled" ValidationGroup="login" />
+                <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="Cancel" />
+                <br />
+                <asp:Label ID="lblLoginStatus" runat="server"></asp:Label>
+            </asp:View>
+            <asp:View ID="View3" runat="server">
+                Welcome
+                <asp:Label ID="lblUsername" runat="server" Text="Label"></asp:Label>
+                .&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnLogout" runat="server" OnClick="btnLogout_Click" Text="Logout" />
+            </asp:View>
+        </asp:MultiView>
+        <br />
+        <asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource">
+            <StaticItemTemplate>
+                <img alt="" src="Images/book_closed.gif" height="16" style="border-width: 0px" width="16" />
+                <%# Eval("Text") %>
+            </StaticItemTemplate>
+        </asp:Menu>
+    </div>
+    <div class="Content">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+            
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>
