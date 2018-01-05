@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oracle.DataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -14,22 +15,22 @@ public partial class HelpDesk : System.Web.UI.Page
         if (!IsPostBack)
         {
             // Define data objects
-            SqlConnection conn;
-            SqlCommand categoryComm;
-            SqlCommand subjectComm;
-            SqlDataReader reader;
+            OracleConnection conn;
+            OracleCommand categoryComm;
+            OracleCommand subjectComm;
+            OracleDataReader reader;
             // Read the connection string from Web.config
             string connectionString =
                 ConfigurationManager.ConnectionStrings[
-                "Dorknozzle"].ConnectionString;
+                "Oracle1ConnectionString"].ConnectionString;
             // Initialize connection
-            conn = new SqlConnection(connectionString);
+            conn = new OracleConnection(connectionString);
             // Create command to read the help desk categories
-            categoryComm = new SqlCommand(
+            categoryComm = new OracleCommand(
                 "SELECT CategoryID, Category FROM HelpDeskCategories",
                 conn);
             // Create command to read the help desk subjects
-            subjectComm = new SqlCommand(
+            subjectComm = new OracleCommand(
                 "SELECT SubjectID, Subject FROM HelpDeskSubjects", conn);
             // Enclose database code in Try-Catch-Finally
             try
@@ -68,34 +69,34 @@ public partial class HelpDesk : System.Web.UI.Page
         if (Page.IsValid)
         {
             // Define data objects
-            SqlConnection conn;
-            SqlCommand comm;
+            OracleConnection conn;
+            OracleCommand comm;
             // Read the connection string from Web.config
             string connectionString =
                 ConfigurationManager.ConnectionStrings[
-                "DorkNozzle"].ConnectionString;
+                "Oracle1ConnectionString"].ConnectionString;
             // Initialize connection
-            conn = new SqlConnection(connectionString);
+            conn = new OracleConnection(connectionString);
             string sqlString = "insert into HelpDesk(EmployeeID,StationNumber,CategoryID,SubjectID,Description,StatusID) " +
-                                    "values (@EmployeeID,@StationNumber,@CategoryID,@SubjectID,@Description,@StatusID)";
-            comm = new SqlCommand(sqlString, conn);
-            comm.Parameters.Add("@EmployeeID", System.Data.SqlDbType.Int);
-            comm.Parameters["@EmployeeID"].Value = 5; // any random value for now
-            comm.Parameters.Add("@StationNumber",
-                System.Data.SqlDbType.Int);
-            comm.Parameters["@StationNumber"].Value = StationTextBox.Text;
-            comm.Parameters.Add("@CategoryID", System.Data.SqlDbType.Int);
-            comm.Parameters["@CategoryID"].Value =
+                                    "values (:EmployeeID,:StationNumber,:CategoryID,:SubjectID,:Description,:StatusID)";
+            comm = new OracleCommand(sqlString, conn);
+            comm.Parameters.Add("EmployeeID", OracleDbType.Int32);
+            comm.Parameters["EmployeeID"].Value = 5; // any random value for now
+            comm.Parameters.Add("StationNumber",
+                OracleDbType.Int32);
+            comm.Parameters["StationNumber"].Value = StationTextBox.Text;
+            comm.Parameters.Add("CategoryID", OracleDbType.Int32);
+            comm.Parameters["CategoryID"].Value =
                 CategoryList.SelectedItem.Value;
-            comm.Parameters.Add("@SubjectID", System.Data.SqlDbType.Int);
-            comm.Parameters["@SubjectID"].Value =
+            comm.Parameters.Add("SubjectID", OracleDbType.Int32);
+            comm.Parameters["SubjectID"].Value =
                 SubjectList.SelectedItem.Value;
-            comm.Parameters.Add("@Description",
-                System.Data.SqlDbType.NVarChar, 50);
-            comm.Parameters["@Description"].Value =
+            comm.Parameters.Add("Description",
+                OracleDbType.Varchar2, 50);
+            comm.Parameters["Description"].Value =
                 descriptionTextBox.Text;
-            comm.Parameters.Add("@StatusID", System.Data.SqlDbType.Int);
-            comm.Parameters["@StatusID"].Value = 1; // any random value
+            comm.Parameters.Add("StatusID", OracleDbType.Int32);
+            comm.Parameters["StatusID"].Value = 1; // any random value
             // Enclose database code in Try-Catch-Finally
             try
             {

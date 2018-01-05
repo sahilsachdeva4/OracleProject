@@ -6,9 +6,9 @@
     <h1>Address Book</h1>
     <asp:GridView ID="grid" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="gridSelectionChanged">        
         <Columns>
-            <asp:BoundField DataField="Name" HeaderText="Mother Fucker Name" />
-            <asp:BoundField DataField="City" HeaderText="Mother Fucker City" />
-            <asp:BoundField DataField="MobilePhone" HeaderText="Mother Fucker Mobile Number" />
+            <asp:BoundField DataField="Name" HeaderText="Name" />
+            <asp:BoundField DataField="City" HeaderText="City" />
+            <asp:BoundField DataField="MobilePhone" HeaderText="Mobile Number" />
             <asp:CommandField ShowSelectButton="True" />
         </Columns>
     </asp:GridView>

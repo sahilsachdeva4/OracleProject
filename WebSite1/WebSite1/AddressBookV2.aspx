@@ -7,8 +7,8 @@
 
     <asp:Button ID="insertNewRecord" runat="server" Text="Insert New Employee" OnClick="insertNewRecord_Click" />
     
-    <asp:SqlDataSource ID="employeesDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:DorkNozzle %>" SelectCommand="SELECT [EmployeeID], [Name], [City], [MobilePhone] FROM [Employees] ORDER BY [Name]"></asp:SqlDataSource>
-    <asp:GridView ID="grid" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="EmployeeID" DataSourceID="employeesDataSource" PageSize="3">
+    <asp:SqlDataSource ID="employeesDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:Oracle1ConnectionString %>"  ProviderName="<%$ ConnectionStrings:Oracle1ConnectionString.ProviderName %>" SelectCommand="SELECT EmployeeID, Name, City, MobilePhone FROM DN_Employees ORDER BY Name"></asp:SqlDataSource>
+    <asp:GridView ID="grid" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="EmployeeID" DataSourceID="employeesDataSource" PageSize="3">
         <Columns>
             <asp:BoundField DataField="Name" HeaderText="Name" SortExpression="Name" />
             <asp:BoundField DataField="City" HeaderText="City" SortExpression="City" />
@@ -21,7 +21,7 @@
 
     <br />
 
-    <asp:DetailsView ID="employeeDetails" runat="server" AutoGenerateRows="False" DataKeyNames="EmployeeID" DataSourceID="employeeDataSource" OnItemDeleted="employeeDetails_ItemDeleted" OnItemInserted="employeeDetails_ItemInserted" OnItemUpdated="employeeDetails_ItemUpdated">
+    <asp:DetailsView ID="employeeDetails" runat="server" AutoGenerateRows="False" DataKeyNames="EmployeeID" DataSourceID="employeeDataSource" OnItemDeleted="employeeDetails_ItemDeleted" OnItemInserted="employeeDetails_ItemInserted" OnItemUpdated="employeeDetails_ItemUpdated" >
         <Fields>
             <asp:TemplateField HeaderText="DepartmentID" SortExpression="DepartmentID">
                 <EditItemTemplate>
@@ -55,11 +55,12 @@
         <HeaderStyle CssClass="GridHeader" />
     </asp:DetailsView>
     <asp:SqlDataSource ID="employeeDataSource" runat="server" 
-        ConnectionString="<%$ ConnectionStrings:DorkNozzle %>" 
-        DeleteCommand="DELETE FROM [Employees] WHERE [EmployeeID] = @EmployeeID" 
-        InsertCommand="INSERT INTO [Employees] ([DepartmentID], [Name], [Username], [Password], [Address], [City], [State], [MobilePhone], [Extension], [HomePhone], [Zip]) VALUES (@DepartmentID, @Name, @Username, @Password, @Address, @City, @State, @MobilePhone, @Extension, @HomePhone, @Zip)" 
-        SelectCommand="SELECT [EmployeeID], [DepartmentID], [Name], [Username], [Password], [Address], [City], [State], [MobilePhone], [Extension], [HomePhone], [Zip] FROM [Employees] WHERE ([EmployeeID] = @EmployeeID)" 
-        UpdateCommand="UPDATE [Employees] SET [DepartmentID] = @DepartmentID, [Name] = @Name, [Username] = @Username, [Password] = @Password, [Address] = @Address, [City] = @City, [State] = @State, [MobilePhone] = @MobilePhone, [Extension] = @Extension, [HomePhone] = @HomePhone, [Zip] = @Zip WHERE [EmployeeID] = @EmployeeID">
+        ConnectionString="<%$ ConnectionStrings:Oracle1ConnectionString %>" 
+        ProviderName="<%$ ConnectionStrings:Oracle1ConnectionString.ProviderName %>"
+        DeleteCommand="DELETE FROM DN_Employees WHERE EmployeeID = :EmployeeID" 
+        InsertCommand="INSERT INTO DN_Employees (DepartmentID, Name, Username, Password, Address, City, State, MobilePhone, Extension, HomePhone, Zip) VALUES (:DepartmentID, :Name, :Username, :Password, :Address, :City, :State, :MobilePhone, :Extension, :HomePhone, :Zip)" 
+        SelectCommand="SELECT EmployeeID, DepartmentID, Name, Username, Password, Address, City, State, MobilePhone, Extension, HomePhone, Zip FROM DN_Employees WHERE (EmployeeID = :EmployeeID)" 
+        UpdateCommand="UPDATE DN_Employees SET DepartmentID = :DepartmentID, Name = :Name, Username = :Username, Password = :Password, Address = :Address, City = :City, State = :State, MobilePhone = :MobilePhone, Extension = :Extension, HomePhone = :HomePhone, Zip = :Zip WHERE EmployeeID =:EmployeeID">
         <DeleteParameters>
             <asp:Parameter Name="EmployeeID" Type="Int32" />
         </DeleteParameters>
@@ -94,6 +95,6 @@
             <asp:Parameter Name="EmployeeID" Type="Int32" />
         </UpdateParameters>
     </asp:SqlDataSource>
-    <asp:SqlDataSource ID="departmentDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:DorkNozzle %>" SelectCommand="SELECT [DepartmentID], [Department] FROM [Departments] ORDER BY [Department]"></asp:SqlDataSource>
+    <asp:SqlDataSource ID="departmentDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:Oracle1ConnectionString %>" SelectCommand="SELECT &quot;DEPARTMENTID&quot;, &quot;DEPARTMENT&quot; FROM &quot;DN_DEPARTMENTS&quot; ORDER BY &quot;DEPARTMENT&quot;" ProviderName="<%$ ConnectionStrings:Oracle1ConnectionString.ProviderName %>"></asp:SqlDataSource>
 </asp:Content>
 
