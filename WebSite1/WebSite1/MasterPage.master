@@ -37,6 +37,7 @@
             </asp:View>
         </asp:MultiView>
         <br />
+        <asp:Label runat="server" ID="lastLoggedInLabel" Text="Label"></asp:Label>
         <asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource">
             <StaticItemTemplate>
                 <img alt="" src="Images/book_closed.gif" height="16" style="border-width: 0px" width="16" />

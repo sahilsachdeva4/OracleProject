@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -53,8 +54,61 @@ public partial class Register : System.Web.UI.Page
         }
         else if (outStatus == "3")
         {
+            updateLogInDetails();
             Response.Redirect("Default.aspx");
         }
     }
 
+    private void updateLogInDetails()
+    {
+        int empId = getEmployeeId(txtUsername.Text);
+        OracleConnection conn = new OracleConnection(
+                ConfigurationManager.ConnectionStrings["Oracle1ConnectionString"].ConnectionString);
+        OracleCommand comm;
+        string sqlString = "insert into LOGINDETAILS(EMPID,LASTLOGINTIME) values (:EMPID,'')";
+        comm = new OracleCommand(sqlString, conn);
+        comm.CommandType = CommandType.Text;
+        comm.Parameters.Add(":EMPLOYEEID", empId);
+        try
+        {
+            conn.Open();
+            comm.ExecuteNonQuery();
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
+
+    private int getEmployeeId(string userName)
+    {
+        int employeeId;
+        OracleConnection conn = new OracleConnection(
+            ConfigurationManager.ConnectionStrings["Oracle1ConnectionString"].ConnectionString);
+        OracleCommand comm;
+        OracleDataReader reader;
+        string sqlString = "select EMPLOYEEID from DN_EMPLOYEES where USERNAME=:NAME";
+        comm = new OracleCommand(sqlString, conn);
+        comm.CommandType = CommandType.Text;
+        comm.Parameters.Add(":NAME", userName);
+        try
+        {
+            conn.Open();
+            reader = comm.ExecuteReader();
+            if (reader.Read())
+            {
+                employeeId = reader.GetInt32(0);
+            }
+            else
+            {
+                employeeId = 0;
+            }
+            reader.Close();
+        }
+        finally
+        {
+            conn.Close();
+        }
+        return employeeId;
+    }
 }
